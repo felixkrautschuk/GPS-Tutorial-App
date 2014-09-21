@@ -77,8 +77,8 @@ public class MainActivity extends Activity implements LocationListener
         }
 
         System.out.println("Provider " + provider + " has been selected.");
-        int lat = (int) (location.getLatitude());
-        int lng = (int) (location.getLongitude());
+        double lat = location.getLatitude();
+        double lng = location.getLongitude();
         latituteField.setText(String.valueOf(lat));
         longitudeField.setText(String.valueOf(lng));
     }
