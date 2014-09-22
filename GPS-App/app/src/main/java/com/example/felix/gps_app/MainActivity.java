@@ -2,7 +2,6 @@ package com.example.felix.gps_app;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -10,9 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -35,12 +32,9 @@ public class MainActivity extends Activity implements LocationListener
     Location location;
     GoogleMap map;
     Criteria criteria;
-    String provider;
-    Intent intent;
     private TextView textLatitude;
     private TextView textLongitude;
     private TextView textAddress;
-    private TextView textProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -51,14 +45,12 @@ public class MainActivity extends Activity implements LocationListener
         textLatitude = (TextView) findViewById(R.id.TextViewLatValue);
         textLongitude = (TextView) findViewById(R.id.TextViewLonValue);
         textAddress = (TextView) findViewById(R.id.TextViewAddValue);
-        textProvider = (TextView) findViewById(R.id.TextViewProviderValue);
 
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         criteria = new Criteria();
-        provider = locationManager.getBestProvider(criteria, true);
-        location = locationManager.getLastKnownLocation(provider);
-        locationManager.requestLocationUpdates(provider, 20000, 0, this);
+        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 20000, 0, this);
 
         //Aktiviere mobiles Internet
         try
@@ -85,9 +77,6 @@ public class MainActivity extends Activity implements LocationListener
         {
             e.printStackTrace();
         }
-
-
-
 
 
         if(location != null)
@@ -162,9 +151,6 @@ public class MainActivity extends Activity implements LocationListener
         {
             textAddress.setText("suche Adresse...");
         }
-
-        //Provider anzeigen
-        textProvider.setText(provider);
     }
 
     @Override
