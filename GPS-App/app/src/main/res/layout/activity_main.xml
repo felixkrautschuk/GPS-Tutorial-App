@@ -27,11 +27,11 @@
 
         <TextView
             android:id="@+id/TextViewLat"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="5dip"
-            android:text="Latitude: "
+            android:text="Breitengrad: "
             android:textSize="20dip">
         </TextView>
 
@@ -39,7 +39,7 @@
             android:id="@+id/TextViewLatValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="unknown"
+            android:text="unbekannt"
             android:textSize="20dip">
         </TextView>
 
@@ -54,11 +54,11 @@
 
         <TextView
             android:id="@+id/TextViewLon"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="5dip"
-            android:text="Longitute: "
+            android:text="Längengrad: "
             android:textSize="20dip">
         </TextView>
 
@@ -66,7 +66,59 @@
             android:id="@+id/TextViewLonValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="unknown"
+            android:text="unbekannt"
+            android:textSize="20dip">
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutAdd"
+        android:orientation="horizontal"
+        android:layout_below="@+id/linearLayoutLon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/TextViewAdd"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="5dip"
+            android:text="Adresse: "
+            android:textSize="20dip">
+        </TextView>
+
+        <TextView
+            android:id="@+id/TextViewAddValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="unbekannt"
+            android:textSize="20dip">
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutProvider"
+        android:orientation="horizontal"
+        android:layout_below="@+id/linearLayoutAdd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/TextViewProvider"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="5dip"
+            android:text="Provider: "
+            android:textSize="20dip">
+        </TextView>
+
+        <TextView
+            android:id="@+id/TextViewProviderValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="unbekannt"
             android:textSize="20dip">
         </TextView>
     </LinearLayout>
