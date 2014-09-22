@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,7 +56,7 @@ public class MainActivity extends Activity implements LocationListener
         //Aktiviere mobiles Internet
         try
         {
-            setMobileDataEnabled(getApplicationContext(), true);
+            setWlanAndMobileDataEnabled(getApplicationContext(), true);
         }
         catch (ClassNotFoundException e)
         {
@@ -185,7 +186,8 @@ public class MainActivity extends Activity implements LocationListener
         map.addMarker(new MarkerOptions().position(currentPosition).snippet("Lat: " + location.getLatitude() + "Lng: " + location.getLongitude()));
     }
 
-    private void setMobileDataEnabled(Context context, boolean enabled) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    private void setWlanAndMobileDataEnabled(Context context, boolean enabled) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
+    {
         final ConnectivityManager conman = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
         final Class conmanClass = Class.forName(conman.getClass().getName());
         final Field connectivityManagerField = conmanClass.getDeclaredField("mService");
@@ -196,5 +198,8 @@ public class MainActivity extends Activity implements LocationListener
         setMobileDataEnabledMethod.setAccessible(true);
 
         setMobileDataEnabledMethod.invoke(connectivityManager, enabled);
+
+        WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        wifiManager.setWifiEnabled(enabled);
     }
 }
