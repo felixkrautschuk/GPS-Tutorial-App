@@ -1,6 +1,7 @@
 package com.example.felix.gps_app;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Criteria;
@@ -8,6 +9,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -20,6 +22,9 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,6 +59,35 @@ public class MainActivity extends Activity implements LocationListener
         provider = locationManager.getBestProvider(criteria, true);
         location = locationManager.getLastKnownLocation(provider);
         locationManager.requestLocationUpdates(provider, 20000, 0, this);
+
+        //Aktiviere mobiles Internet
+        try
+        {
+            setMobileDataEnabled(getApplicationContext(), true);
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (NoSuchFieldException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
+        catch (NoSuchMethodException e)
+        {
+            e.printStackTrace();
+        }
+        catch (InvocationTargetException e)
+        {
+            e.printStackTrace();
+        }
+
+
+
 
 
         if(location != null)
@@ -92,9 +126,6 @@ public class MainActivity extends Activity implements LocationListener
             drawMarker(location);
         }
 
-        //Provider (GPS, Network,...) angeben
-        System.out.println("Provider " + provider + " has been selected.");
-
         //Breitengrad und Längengrad ermitteln und anzeigen
         double lat = location.getLatitude();
         double
@@ -129,7 +160,7 @@ public class MainActivity extends Activity implements LocationListener
 
         else
         {
-            textAddress.setText("Es wurde keine passende Adresse gefunden!");
+            textAddress.setText("suche Adresse...");
         }
 
         //Provider anzeigen
@@ -166,5 +197,18 @@ public class MainActivity extends Activity implements LocationListener
 
         //aktuelle Position markieren
         map.addMarker(new MarkerOptions().position(currentPosition).snippet("Lat: " + location.getLatitude() + "Lng: " + location.getLongitude()));
+    }
+
+    private void setMobileDataEnabled(Context context, boolean enabled) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        final ConnectivityManager conman = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        final Class conmanClass = Class.forName(conman.getClass().getName());
+        final Field connectivityManagerField = conmanClass.getDeclaredField("mService");
+        connectivityManagerField.setAccessible(true);
+        final Object connectivityManager = connectivityManagerField.get(conman);
+        final Class connectivityManagerClass =  Class.forName(connectivityManager.getClass().getName());
+        final Method setMobileDataEnabledMethod = connectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+        setMobileDataEnabledMethod.setAccessible(true);
+
+        setMobileDataEnabledMethod.invoke(connectivityManager, enabled);
     }
 }
